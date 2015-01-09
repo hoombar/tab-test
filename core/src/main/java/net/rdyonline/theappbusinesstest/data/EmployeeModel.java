@@ -17,6 +17,8 @@ public class EmployeeModel implements Model<Employee> {
     }
 
     public List<Employee> listAll() {
-        return webApi.getData().getEmployeeList();
+        if (webApi == null) return null;
+
+        return webApi.list();
     }
 }

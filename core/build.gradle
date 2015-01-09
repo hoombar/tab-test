@@ -2,6 +2,14 @@ apply plugin: 'java'
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.squareup.retrofit:retrofit:1.9.0'
+    // http://stackoverflow.com/questions/18084285/using-simplexml-with-android-and-gradle
+    compile('org.simpleframework:simple-xml:2.7.+'){
+        exclude module: 'stax'
+        exclude module: 'stax-api'
+        exclude module: 'xpp3'
+    }
+
     testCompile 'junit:junit:4.+'
     testCompile 'org.easytesting:fest-assert-core:2.0M10'
     testCompile 'org.mockito:mockito-all:1.9.5'

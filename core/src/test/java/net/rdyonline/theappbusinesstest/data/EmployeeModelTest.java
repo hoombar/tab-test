@@ -1,8 +1,6 @@
 package net.rdyonline.theappbusinesstest.data;
 
 import net.rdyonline.theappbusinesstest.data.web.EmployeeWebApi;
-import net.rdyonline.theappbusinesstest.data.web.EmployeeWebData;
-import net.rdyonline.theappbusinesstest.data.web.WebApi;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -20,7 +18,6 @@ import static org.mockito.Mockito.when;
 public class EmployeeModelTest {
 
     EmployeeWebApi webApi = mock(EmployeeWebApi.class);
-    EmployeeWebData data = mock(EmployeeWebData.class);
     EmployeeModel sut = new EmployeeModel(webApi);
 
     List<Employee> employees;
@@ -37,8 +34,7 @@ public class EmployeeModelTest {
         employees.add(EMPLOYEE_3);
         employees.add(EMPLOYEE_4);
 
-        when(data.getEmployeeList()).thenReturn(employees);
-        when(webApi.getData()).thenReturn(data);
+        when(webApi.list()).thenReturn(employees);
     }
 
     @Test
@@ -46,6 +42,13 @@ public class EmployeeModelTest {
         List<Employee> sutEmployees = sut.listAll();
         assertThat(sutEmployees).contains(EMPLOYEE_1, EMPLOYEE_2, EMPLOYEE_3, EMPLOYEE_4);
     }
+
+    @Test
+    public void shouldReturnNullIfNoEmployeeAvailable() {
+        when(webApi.list()).thenReturn(null);
+        assertThat(sut.listAll()).isNull();
+    }
+
 
 
 }

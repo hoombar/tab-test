@@ -1,7 +1,6 @@
 package net.rdyonline.theappbusinesstest.ui.employee;
 
 import android.app.Activity;
-import android.app.ActionBar;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,7 +8,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.os.Build;
 
 import net.rdyonline.theappbusinesstest.R;
 
@@ -22,7 +20,7 @@ public class EmployeeActivity extends Activity {
         setContentView(R.layout.activity_employee);
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment())
+                    .add(R.id.container, new EmployeeDetailsFragment())
                     .commit();
         }
     }
@@ -50,19 +48,4 @@ public class EmployeeActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-
-        public PlaceholderFragment() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_employee, container, false);
-            return rootView;
-        }
-    }
 }
