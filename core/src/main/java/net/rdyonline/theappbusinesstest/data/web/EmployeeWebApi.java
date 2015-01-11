@@ -23,7 +23,9 @@ public class EmployeeWebApi extends ConcreteWebApi<Employee> {
     public List<Employee> fetch() {
         EmployeeService.EmployeeWebPageWrapper wrapper = service.getEmployeesFromWebsite();
 
-        // TODO(benp) parse wrapper
+        if (wrapper.employees != null && wrapper.employees.size() > 0) {
+            return wrapper.employees;
+        }
 
         return null;
     }

@@ -11,7 +11,7 @@ import net.rdyonline.theappbusinesstest.R;
 import net.rdyonline.theappbusinesstest.data.web.EmployeeWebApi;
 import net.rdyonline.theappbusinesstest.data.web.retrofit.ApiAdapter;
 import net.rdyonline.theappbusinesstest.data.web.retrofit.EmployeeService;
-import net.rdyonline.theappbusinesstest.data.web.retrofit.converter.SimpleXmlConverter;
+import net.rdyonline.theappbusinesstest.data.web.retrofit.converter.TabEmployeePageConverter;
 
 /**
  * Created by rdy on 09/01/15.
@@ -26,7 +26,7 @@ public class EmployeeDetailsFragment extends Fragment {
         rootView.findViewById(R.id.tmp).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SimpleXmlConverter converter = new SimpleXmlConverter();
+                TabEmployeePageConverter converter = new TabEmployeePageConverter();
                 ApiAdapter apiAdapter = new ApiAdapter(converter);
                 EmployeeService service = apiAdapter.getAdapter().create(EmployeeService.class);
 

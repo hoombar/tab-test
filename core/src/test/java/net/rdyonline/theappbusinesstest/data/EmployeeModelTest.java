@@ -20,7 +20,7 @@ public class EmployeeModelTest {
     EmployeeWebApi webApi = mock(EmployeeWebApi.class);
     EmployeeModel sut = new EmployeeModel(webApi);
 
-    List<Employee> employees;
+    List<Employee> employees = new ArrayList<Employee>();
     Employee EMPLOYEE_1 = mock(Employee.class);
     Employee EMPLOYEE_2 = mock(Employee.class);
     Employee EMPLOYEE_3 = mock(Employee.class);
@@ -28,7 +28,6 @@ public class EmployeeModelTest {
 
     @Before
     public void setup() {
-        employees = new ArrayList<Employee>();
         employees.add(EMPLOYEE_1);
         employees.add(EMPLOYEE_2);
         employees.add(EMPLOYEE_3);

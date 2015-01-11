@@ -19,11 +19,11 @@ public abstract class ConcreteWebApi<T> implements WebApi<T> {
     @Override
     public List<T> list() {
         List<T> data = fetch();
-        if (data != null) {
+        if (data != null && data.size() > 0) {
             saveData(data);
         };
 
-        return null;
+        return data;
     }
 
     /***

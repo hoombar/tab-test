@@ -1,5 +1,10 @@
 package net.rdyonline.theappbusinesstest.data.web.retrofit;
 
+import net.rdyonline.theappbusinesstest.data.Employee;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import retrofit.http.GET;
 
 /**
@@ -11,7 +16,7 @@ public interface EmployeeService {
     public EmployeeWebPageWrapper getEmployeesFromWebsite();
 
     public class EmployeeWebPageWrapper {
-
+        public List<Employee> employees = new ArrayList<Employee>();
     }
 
 }
