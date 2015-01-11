@@ -28,7 +28,7 @@ public class TabEmployeePageConverter implements Converter {
 
     private final String ROOT_EMPLOYEE_SELECTOR = "#users .wrapper .row .col";
     private final String NAME_SELECTOR = "h3";
-    private final String ROLE_SELETOR = "p";
+    private final String ROLE_SELETOR = "p:eq(2)";
     private final String IMAGE_SELECTOR = ".title img";
     private final String DESCRIPTION_SELECTOR = "p.user-description";
 

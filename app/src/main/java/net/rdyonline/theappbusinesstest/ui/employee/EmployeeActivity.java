@@ -2,6 +2,7 @@ package net.rdyonline.theappbusinesstest.ui.employee;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -28,7 +29,8 @@ import net.rdyonline.theappbusinesstest.data.web.retrofit.converter.TabEmployeeP
 import java.util.List;
 
 
-public class EmployeeActivity extends Activity {
+public class EmployeeActivity extends Activity implements
+        EmployeeListAdapter.OnEmployeeItemClickListener {
 
     DataProvider<Employee> dataProvider;
     List<Employee> employees;
@@ -107,18 +109,26 @@ public class EmployeeActivity extends Activity {
 
     private void updateViews() {
         if (employees.size() == 1) {
-            // load detail view
-            getFragmentManager().beginTransaction()
-                    .replace(R.id.container, EmployeeDetailsFragment.newInstance(employees.get(0)))
-                    .commit();
+            loadEmployeeDetails(employees.get(0), false);
 
         } else if (employees.size() > 1) {
             // load list view
             getFragmentManager().beginTransaction()
-                    .replace(R.id.container, EmployeeListFragment.newInstance(employees))
+                    .replace(R.id.container, EmployeeListFragment.newInstance(employees, this))
                     .commit();
 
         }
+    }
+
+    private void loadEmployeeDetails(Employee employee, boolean addToBackStack) {
+        // load detail view
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.container, EmployeeDetailsFragment.newInstance(employee));
+        if (addToBackStack) {
+            transaction.addToBackStack("detail");
+        }
+
+        transaction.commit();
     }
 
     /**
@@ -137,5 +147,10 @@ public class EmployeeActivity extends Activity {
 
         return (null != wifi && wifi.isConnected())
                 || (null != mobile && mobile.isConnected());
+    }
+
+    @Override
+    public void employeeSelected(Employee employee) {
+        loadEmployeeDetails(employee, true);
     }
 }
