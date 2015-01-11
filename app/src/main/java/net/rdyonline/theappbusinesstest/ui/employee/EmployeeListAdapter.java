@@ -12,6 +12,7 @@ import com.squareup.picasso.Picasso;
 
 import net.rdyonline.theappbusinesstest.data.Employee;
 import net.rdyonline.theappbusinesstest.R;
+import net.rdyonline.theappbusinesstest.ui.RoundedTransformation;
 
 import java.util.List;
 
@@ -64,7 +65,8 @@ public class EmployeeListAdapter extends RecyclerView.Adapter<EmployeeListAdapte
             employee = item;
 
             name.setText(employee.getName());
-            Picasso.with(context).load(employee.getImage()).into(avatar);
+            Picasso.with(context).load(employee.getImage()).transform(new RoundedTransformation())
+                    .into(avatar);
         }
 
         public ViewHolder(View v, OnEmployeeItemClickListener listener) {
