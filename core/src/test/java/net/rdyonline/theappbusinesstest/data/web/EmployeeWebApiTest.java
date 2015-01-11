@@ -1,5 +1,6 @@
 package net.rdyonline.theappbusinesstest.data.web;
 
+import net.rdyonline.theappbusinesstest.data.DataPersister;
 import net.rdyonline.theappbusinesstest.data.Employee;
 import net.rdyonline.theappbusinesstest.data.web.retrofit.ApiAdapter;
 import net.rdyonline.theappbusinesstest.data.web.retrofit.EmployeeService;
@@ -32,6 +33,7 @@ import static org.mockito.Mockito.when;
  */
 public class EmployeeWebApiTest {
 
+    DataPersister<Employee> persister = mock(DataPersister.class);
     EmployeeService employeeService = mock(EmployeeService.class);
 
     EmployeeWebApi sut;
@@ -43,7 +45,7 @@ public class EmployeeWebApiTest {
 
     @Before
     public void setup() {
-        sut = spy(new EmployeeWebApi(employeeService));
+        sut = spy(new EmployeeWebApi(employeeService, persister));
 
         employees = new ArrayList<Employee>();
         employees.add(EMPLOYEE_ONE);
@@ -66,20 +68,20 @@ public class EmployeeWebApiTest {
     @Test
     public void shouldSaveDataWhenDataListedAndValidDataReturned() {
         List<Employee> data = sut.list();
-        verify(sut).saveData(data);
+        verify(persister).saveData(data);
     }
 
     @Test
     public void shouldNotSaveDataWhenDataListedAndNoneReturned() {
         doReturn(new ArrayList<Employee>()).when(sut).fetch();
         sut.list();
-        verify(sut, never()).saveData(anyList());
+        verify(persister, never()).saveData(anyList());
     }
 
     @Test
     public void shouldNotSaveDataWhenDataListedAndNullReturned() {
         doReturn(null).when(sut).fetch();
         sut.list();
-        verify(sut, never()).saveData(anyList());
+        verify(persister, never()).saveData(anyList());
     }
 }

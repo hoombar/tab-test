@@ -1,7 +1,6 @@
 package net.rdyonline.theappbusinesstest.data;
 
 import net.rdyonline.theappbusinesstest.data.web.EmployeeWebApi;
-import net.rdyonline.theappbusinesstest.data.web.WebApi;
 
 import java.util.List;
 

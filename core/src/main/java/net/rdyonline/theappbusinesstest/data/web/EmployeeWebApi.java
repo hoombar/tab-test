@@ -1,21 +1,20 @@
 package net.rdyonline.theappbusinesstest.data.web;
 
+import net.rdyonline.theappbusinesstest.data.DataPersister;
 import net.rdyonline.theappbusinesstest.data.Employee;
-import net.rdyonline.theappbusinesstest.data.web.retrofit.ApiAdapter;
 import net.rdyonline.theappbusinesstest.data.web.retrofit.EmployeeService;
 
 import java.util.List;
 
-import retrofit.converter.Converter;
-
 /**
  * Created by rdy on 09/01/15.
  */
-public class EmployeeWebApi extends ConcreteWebApi<Employee> {
+public class EmployeeWebApi extends WebApi<Employee> {
 
     EmployeeService service;
 
-    public EmployeeWebApi(EmployeeService service) {
+    public EmployeeWebApi(EmployeeService service, DataPersister<Employee> persister) {
+        super(persister);
         this.service = service;
     }
 
@@ -30,8 +29,4 @@ public class EmployeeWebApi extends ConcreteWebApi<Employee> {
         return null;
     }
 
-    @Override
-    public void saveData(List<Employee> data) {
-
-    }
 }
