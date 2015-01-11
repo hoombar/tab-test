@@ -1,7 +1,6 @@
 package net.rdyonline.theappbusinesstest.data.web.retrofit.converter;
 
 import net.rdyonline.theappbusinesstest.data.Employee;
-import net.rdyonline.theappbusinesstest.data.TabEmployee;
 import net.rdyonline.theappbusinesstest.data.web.retrofit.EmployeeService;
 
 import org.jsoup.Jsoup;
@@ -47,7 +46,7 @@ public class TabEmployeePageConverter implements Converter {
                 String image = user.select(IMAGE_SELECTOR).attr("src");
                 String description = user.select(DESCRIPTION_SELECTOR).text();
 
-                Employee tabEmployee = new TabEmployee(name, role, image, description);
+                Employee tabEmployee = new Employee(name, role, image, description);
 
                 result.employees.add(tabEmployee);
             }

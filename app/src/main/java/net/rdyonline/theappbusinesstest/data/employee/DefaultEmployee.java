@@ -5,7 +5,6 @@ import android.content.res.Resources;
 import net.rdyonline.theappbusinesstest.R;
 import net.rdyonline.theappbusinesstest.data.DataProvider;
 import net.rdyonline.theappbusinesstest.data.Employee;
-import net.rdyonline.theappbusinesstest.data.TabEmployee;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +30,7 @@ public class DefaultEmployee implements DataProvider<Employee> {
         String description = resources.getString(R.string.default_employee_description);
 
 
-        defaults.add(new TabEmployee(name, title, image, description));
+        defaults.add(new Employee(name, title, image, description));
 
         return defaults;
     }

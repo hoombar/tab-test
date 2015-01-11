@@ -1,7 +1,5 @@
 package net.rdyonline.theappbusinesstest.data;
 
-import junit.framework.TestCase;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -9,7 +7,7 @@ import static org.fest.assertions.api.Assertions.assertThat;
 
 public class TabEmployeeTest {
 
-    TabEmployee employeeSut;
+    Employee employeeSut;
 
     String NAME = "Ben Pearson";
     String ROLE = "Android";
@@ -18,7 +16,7 @@ public class TabEmployeeTest {
 
     @Before
     public void setup() {
-        employeeSut = new TabEmployee(NAME, ROLE, IMAGE, DESCRIPTION);
+        employeeSut = new Employee(NAME, ROLE, IMAGE, DESCRIPTION);
     }
 
     @Test

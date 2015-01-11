@@ -1,7 +1,6 @@
 package net.rdyonline.theappbusinesstest.ui.employee;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
@@ -9,16 +8,12 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.Window;
 
 import net.rdyonline.theappbusinesstest.R;
-import net.rdyonline.theappbusinesstest.data.DataPersister;
 import net.rdyonline.theappbusinesstest.data.DataProvider;
 import net.rdyonline.theappbusinesstest.data.Employee;
+import net.rdyonline.theappbusinesstest.data.EmployeeDataPersister;
 import net.rdyonline.theappbusinesstest.data.employee.DefaultEmployee;
 import net.rdyonline.theappbusinesstest.data.employee.EmployeeDataLocal;
 import net.rdyonline.theappbusinesstest.data.web.EmployeeWebApi;
@@ -32,13 +27,16 @@ import java.util.List;
 public class EmployeeActivity extends Activity implements
         EmployeeListAdapter.OnEmployeeItemClickListener {
 
+    EmployeeDataPersister employeeDataPersister;
     DataProvider<Employee> dataProvider;
     List<Employee> employees;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         super.onCreate(savedInstanceState);
-        dataProvider = new DefaultEmployee(getResources());
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        employeeDataPersister = new EmployeeDataPersister(sharedPreferences);
 
         setContentView(R.layout.activity_employee);
     }
@@ -52,6 +50,11 @@ public class EmployeeActivity extends Activity implements
         loadData();
     }
 
+    /*
+     * Using the strategy pattern here. DataProvider can be swapped out for any type of data
+     * provider. For this particular case, I'm using different data providers depending on the
+     * state of the network connection
+     */
     private DataProvider<Employee> getDataProvider() {
         if (isConnected()) {
             return getWebDataProvider();
@@ -60,10 +63,16 @@ public class EmployeeActivity extends Activity implements
         }
     }
 
+    /****
+     * If there's no network connection, a local data provider should be used.
+     * There's an edge case here where they might not have downloaded any data yet - if this is
+     * the case then it should default to showing someting that comes bundled with the app.
+     *
+     * @return A valid data provider for getting employees
+     */
     private DataProvider<Employee> getLocalDataProvider() {
         // not connected - is there cached data?
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        EmployeeDataLocal secondaryProvider = new EmployeeDataLocal(prefs);
+        EmployeeDataLocal secondaryProvider = new EmployeeDataLocal(employeeDataPersister);
 
         if (secondaryProvider.list() != null && secondaryProvider.list().size() > 0) {
             return secondaryProvider;
@@ -73,24 +82,27 @@ public class EmployeeActivity extends Activity implements
     }
 
     private DataProvider<Employee> getWebDataProvider() {
-        DataPersister<Employee> persister = new DataPersister<Employee>() {
-
-            @Override
-            public void saveData(List<Employee> data) {
-                // when the web data has been retrieved, it should be saved for use later,
-                // if there's no network connection when next checking
-            }
-        };
-
         TabEmployeePageConverter converter = new TabEmployeePageConverter();
         ApiAdapter apiAdapter = new ApiAdapter(converter);
         EmployeeService service = apiAdapter.getAdapter().create(EmployeeService.class);
 
-        return new EmployeeWebApi(service, persister);
+        return new EmployeeWebApi(service, employeeDataPersister);
     }
 
+    /***
+     * At the moment, the data loading is done with a simple ASyncTask. For this app,
+     * it seemed a sensible mechanism to use - I have used Publish/Subscribe (Observer pattern)
+     * in the form of an event bus, but that seemed overkill for this.
+     */
     private void loadData() {
         new AsyncTask<Void, Void, List<Employee>>() {
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+
+                setProgressBarIndeterminateVisibility(true);
+            }
 
             @Override
             protected List<Employee> doInBackground(Void... params) {
@@ -99,14 +111,26 @@ public class EmployeeActivity extends Activity implements
 
             @Override
             protected void onPostExecute(List<Employee> data) {
+                if (isFinishing()) {
+                    // if the task runs for a long time, the activity might have been closed.
+                    // This would potentially cause NullPointerException later on when trying to
+                    // do things with context
+                    return;
+                }
+
                 employees = data;
                 updateViews();
+                setProgressBarIndeterminateVisibility(false);
             }
 
         }.execute();
 
     }
 
+    /**
+     * There's two modes - you can either be viewing a list of employees or the details of an
+     * employee
+     */
     private void updateViews() {
         if (employees.size() == 1) {
             loadEmployeeDetails(employees.get(0), false);
@@ -120,6 +144,13 @@ public class EmployeeActivity extends Activity implements
         }
     }
 
+    /***
+     * Looks like we got an employee from somewhere, so need to update the UI by swapping out the
+     * current fragment
+     *
+     * @param employee
+     * @param addToBackStack true if you want back to take pop off the stack
+     */
     private void loadEmployeeDetails(Employee employee, boolean addToBackStack) {
         // load detail view
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
@@ -149,6 +180,11 @@ public class EmployeeActivity extends Activity implements
                 || (null != mobile && mobile.isConnected());
     }
 
+    /**
+     * Listen out for any presses on an employee item and show the pertinent team member
+     *
+     * @param employee
+     */
     @Override
     public void employeeSelected(Employee employee) {
         loadEmployeeDetails(employee, true);

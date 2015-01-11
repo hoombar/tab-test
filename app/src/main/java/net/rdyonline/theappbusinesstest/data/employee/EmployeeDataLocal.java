@@ -1,27 +1,26 @@
 package net.rdyonline.theappbusinesstest.data.employee;
 
-import android.content.SharedPreferences;
-
-import net.rdyonline.theappbusinesstest.data.DataPersister;
 import net.rdyonline.theappbusinesstest.data.DataProvider;
 import net.rdyonline.theappbusinesstest.data.Employee;
-import net.rdyonline.theappbusinesstest.data.web.EmployeeWebApi;
+import net.rdyonline.theappbusinesstest.data.EmployeeDataPersister;
 
 import java.util.List;
 
 /**
+ * The local data provider uses the data that has been persisted to disk
+ *
  * Created by rdy on 11/01/15.
  */
 public class EmployeeDataLocal implements DataProvider<Employee> {
 
-    private SharedPreferences preferences;
+    EmployeeDataPersister employeeDataPersister;
 
-    public EmployeeDataLocal(SharedPreferences preferences) {
-        this.preferences = preferences;
+    public EmployeeDataLocal(EmployeeDataPersister dataPersister) {
+        this.employeeDataPersister = dataPersister;
     }
 
     @Override
     public List<Employee> list() {
-        return null;
+        return employeeDataPersister.load();
     }
 }

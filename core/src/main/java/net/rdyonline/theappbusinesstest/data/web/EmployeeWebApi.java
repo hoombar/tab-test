@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by rdy on 09/01/15.
  */
-public class EmployeeWebApi extends WebApi<Employee> {
+public class EmployeeWebApi<T extends Employee> extends WebApi<Employee> {
 
     EmployeeService service;
 
