@@ -10,8 +10,8 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import net.rdyonline.theappbusinesstest.data.Employee;
 import net.rdyonline.theappbusinesstest.R;
+import net.rdyonline.theappbusinesstest.data.Employee;
 import net.rdyonline.theappbusinesstest.ui.RoundedTransformation;
 
 import java.util.List;

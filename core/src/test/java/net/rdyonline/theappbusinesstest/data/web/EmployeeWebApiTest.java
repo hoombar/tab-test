@@ -2,26 +2,21 @@ package net.rdyonline.theappbusinesstest.data.web;
 
 import net.rdyonline.theappbusinesstest.data.DataPersister;
 import net.rdyonline.theappbusinesstest.data.Employee;
-import net.rdyonline.theappbusinesstest.data.web.retrofit.ApiAdapter;
 import net.rdyonline.theappbusinesstest.data.web.retrofit.EmployeeService;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 import static org.fest.assertions.api.Assertions.assertThat;
-import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyList;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 /**
  * Please note that this isn't 100 percent test coverage, I'm just demonstrating a few techniques

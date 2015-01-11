@@ -1,7 +1,6 @@
 package net.rdyonline.theappbusinesstest.ui.employee;
 
 import android.app.Fragment;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,14 +11,7 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import net.rdyonline.theappbusinesstest.R;
-import net.rdyonline.theappbusinesstest.data.DataPersister;
 import net.rdyonline.theappbusinesstest.data.Employee;
-import net.rdyonline.theappbusinesstest.data.web.EmployeeWebApi;
-import net.rdyonline.theappbusinesstest.data.web.retrofit.ApiAdapter;
-import net.rdyonline.theappbusinesstest.data.web.retrofit.EmployeeService;
-import net.rdyonline.theappbusinesstest.data.web.retrofit.converter.TabEmployeePageConverter;
-
-import java.util.List;
 
 /**
  * Created by rdy on 09/01/15.
