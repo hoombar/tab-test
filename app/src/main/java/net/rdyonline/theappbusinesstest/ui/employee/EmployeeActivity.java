@@ -23,11 +23,17 @@ import net.rdyonline.theappbusinesstest.data.web.retrofit.converter.TabEmployeeP
 
 import java.util.List;
 
-
+/***
+ * The {@link EmployeeActivity} is intended to display a list of employees and show the details
+ * of any employee selected
+ */
 public class EmployeeActivity extends Activity implements
         EmployeeListAdapter.OnEmployeeItemClickListener {
 
+    // I would prefer to use Dagger to inject this - I could have also done it manually,
+    // but inversion of control would have been overkill for an example test
     EmployeeDataPersister employeeDataPersister;
+    // the dataProvider is swapped out based on the network state and local storage state
     DataProvider<Employee> dataProvider;
     List<Employee> employees;
 
